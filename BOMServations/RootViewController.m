@@ -8,21 +8,84 @@
 
 #import "RootViewController.h"
 
+#import "ObservationRetriever.h"
+#import "PersistStore.h"
+#import "SQLDatabase.h"
+#import "BOMServationsAppDelegate.h"
+
+
 @implementation RootViewController
+
+@synthesize observations;
+
+- (void)populateBOM {
+    BOMServationsAppDelegate *del = (BOMServationsAppDelegate*)[[UIApplication sharedApplication] delegate];
+    PersistStore *store = [del.store retain];
+    SQLDatabase *db = store.db;
+    SQLResult *res = [db performQuery:@"SELECT * FROM observation ORDER BY sort_order ASC"];
+    NSMutableArray *newObservations = [NSMutableArray arrayWithCapacity:10];
+    for(SQLRow *row in [res rowEnumerator]) {
+        NSDictionary *result = [NSDictionary dictionaryWithObjectsAndKeys:[row stringForColumn:@"local_date_time"], @"local_date_time", 
+            [row stringForColumn:@"air_temp"], @"air_temp", 
+            [row stringForColumn:@"name"], @"name", 
+            nil];
+        [newObservations addObject:result];
+    }
+    self.observations = newObservations;
+}
+
+- (void)updateBOM {
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
+    [retriever fetchBOMObservations];
+    [self populateBOM];
+    [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+}
+
+- (void)triggerReload:(id)sender {
+    refresh.enabled = NO;
+    dispatch_async(worker, ^{
+        [self updateBOM];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if([self.observations count] > 0) {
+                self.title = [[self.observations objectAtIndex:0] objectForKey:@"name"];
+            }
+            [self.tableView reloadData];
+            refresh.enabled = YES;
+        });
+    });
+}
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    retriever = [[ObservationRetriever alloc] init];
+    self.observations = [NSArray array];
+    worker = dispatch_queue_create("worker1", nil);
+    self.title = @"BOMservations";
+    
+    refresh = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:UIBarButtonSystemItemRefresh target:self action:@selector(triggerReload:)];
+    self.navigationItem.rightBarButtonItem = refresh;
+    [refresh release];
 }
 
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    dispatch_async(worker, ^{
+        [self populateBOM];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            if([self.observations count] > 0) {
+                self.title = [[self.observations objectAtIndex:0] objectForKey:@"name"];
+            }
+            [self.tableView reloadData];
+        });
+    });
 }
 
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [self triggerReload:self];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
@@ -51,7 +114,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 0;
+    return [observations count];
 }
 
 // Customize the appearance of table view cells.
@@ -61,8 +124,14 @@
     
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier];
     if (cell == nil) {
-        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:CellIdentifier] autorelease];
+        cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleValue1 reuseIdentifier:CellIdentifier] autorelease];
     }
+    
+    NSDictionary *observation = [observations objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [observation objectForKey:@"local_date_time"];
+    
+    cell.detailTextLabel.text = [observation objectForKey:@"air_temp"];
 
     // Configure the cell.
     return cell;
@@ -131,6 +200,14 @@
 - (void)viewDidUnload
 {
     [super viewDidUnload];
+    [retriever release];
+    retriever = nil;
+    self.observations = nil;
+    
+    if(worker) {
+        dispatch_release(worker);
+        worker = nil;
+    }
 
     // Relinquish ownership of anything that can be recreated in viewDidLoad or on demand.
     // For example: self.myOutlet = nil;

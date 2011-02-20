@@ -3,13 +3,15 @@
 //  BOMServations
 //
 //  Created by Patrick Quinn-Graham on 20/02/11.
-//  Copyright 2011 Sharkey Media. All rights reserved.
+//  Copyright 2011 Patrick Quinn-Graham. All rights reserved.
 //
 
 #import "BOMServationsAppDelegate.h"
+#import "PersistStore.h"
 
 @implementation BOMServationsAppDelegate
 
+@synthesize store;
 
 @synthesize window=_window;
 
@@ -17,8 +19,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    // Override point for customization after application launch.
-    // Add the navigation controller's view to the window and display.
+    
+	self.store = [PersistStore storeWithFile:[self getDocumentPath:@"bomservations.db"]];
+	
     self.window.rootViewController = self.navigationController;
     [self.window makeKeyAndVisible];
     return YES;
@@ -65,9 +68,34 @@
 
 - (void)dealloc
 {
+    [store release];
     [_window release];
     [_navigationController release];
     [super dealloc];
 }
+
+// Creates a writable copy of the bundled default database in the application Documents directory.
+- (NSString*)getDocumentPath:(NSString*)path {
+    // First, test for existence.
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentsDirectory = [paths objectAtIndex:0];
+	
+#pragma mark Begin Workaround: create application "Documents" directory if needed
+    // Workaround for Beta issue where Documents directory is not created during install.
+    BOOL exists = [fileManager fileExistsAtPath:documentsDirectory];
+    if (!exists) {
+		NSError *err;
+        BOOL success = [fileManager createDirectoryAtPath:documentsDirectory withIntermediateDirectories:YES attributes:nil error:&err];
+        if (!success) {
+            NSAssert(0, @"Failed to create Documents directory.");
+        }
+    }
+#pragma mark End Workaround
+	
+	return [documentsDirectory stringByAppendingPathComponent:path];
+}
+
 
 @end
