@@ -59,6 +59,9 @@
 - (NSString*)nameOfColumnAtIndexNoCopy:(int)inIndex;
 
 
+- (NSNumber*)numberForColumn:(NSString*)inColumnName;
+- (NSNumber*)numberForColumnAtIndex:(int)inIndex;
+
 - (NSInteger)integerForColumn:(NSString*)inColumnName;
 - (NSInteger)integerForColumnAtIndex:(int)inIndex;
 

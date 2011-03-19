@@ -69,14 +69,22 @@
 
 #pragma mark -
 
+- (NSNumber*)numberForColumn:(NSString*)inColumnName {
+    return [NSNumber numberWithDouble:[[self stringForColumnNoCopy:inColumnName] doubleValue]];
+}
+
+- (NSNumber*)numberForColumnAtIndex:(int)inIndex {
+    return [NSNumber numberWithDouble:[[self stringForColumnAtIndexNoCopy:inIndex] doubleValue]];
+}
+
 - (NSInteger)integerForColumn:(NSString*)inColumnName
 {
-	return [[self stringForColumn:inColumnName] integerValue];
+	return [[self stringForColumnNoCopy:inColumnName] integerValue];
 }
 
 - (NSInteger)integerForColumnAtIndex:(int)inIndex
 {
-	return [[self stringForColumnAtIndex:inIndex] integerValue];
+	return [[self stringForColumnAtIndexNoCopy:inIndex] integerValue];
 }
 
 - (NSString*)stringForColumn:(NSString*)inColumnName
