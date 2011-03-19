@@ -26,8 +26,7 @@
 {
 	if((self = [super init])) {
 		dbIsOpen = NO;
-		dbLock = [[NSLock alloc] init];
-        queue = dispatch_queue_create("bomservations.stationsstore", nil);
+		queue = dispatch_queue_create("bomservations.stationsstore", nil);
 	}	
 	return self;
 }
@@ -36,8 +35,7 @@
 	if(dbIsOpen) {
 		[self closeDatabase];
 	}
-	[dbLock release];
-    [db release];
+	[db release];
     dispatch_release(queue);
     [super dealloc];
 }

@@ -7,17 +7,19 @@
 //
 
 #import "MyChoices.h"
-
+#import "BOMServationsAppDelegate.h"
+#import "PersistStore.h"
 #import "AddStation.h"
 
 @implementation MyChoices
-@synthesize addStation;
+@synthesize addStation, choices=_choices;
 
 - (id)initWithStyle:(UITableViewStyle)style
 {
     self = [super initWithStyle:style];
     if (self) {
         // Custom initialization
+        self.choices = [NSArray array];
     }
     return self;
 }
@@ -25,6 +27,7 @@
 - (void)dealloc
 {
     [addStation release];
+    [_choices release];
     [super dealloc];
 }
 
@@ -44,7 +47,7 @@
     
     self.title = @"Stations";
 
-    self.navigationItem.rightBarButtonItem = self.addStation;
+    self.navigationItem.leftBarButtonItem = self.addStation;
     
     // Uncomment the following line to preserve selection between presentations.
     // self.clearsSelectionOnViewWillAppear = NO;
@@ -64,6 +67,7 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+    [self reloadData];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -91,16 +95,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-#warning Potentially incomplete method implementation.
-    // Return the number of sections.
-    return 0;
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
 #warning Incomplete method implementation.
     // Return the number of rows in the section.
-    return 0;
+    return [self.choices count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -113,6 +115,10 @@
     }
     
     // Configure the cell...
+    
+    NSDictionary *row = [self.choices objectAtIndex:indexPath.row];
+    
+    cell.textLabel.text = [NSString stringWithFormat:@"ID: %@, Station: %@", [row objectForKey:@"id"], [row objectForKey:@"station_id"]];
     
     return cell;
 }
@@ -174,6 +180,13 @@
     AddStation *add = [[AddStation alloc] initWithNibName:nil bundle:nil];
     [self presentModalViewController:add animated:YES];
     [add release];
+}
+
+- (void)reloadData {
+    [[BOMServationsAppDelegate shared].store choices:^(NSArray* choices) {
+        self.choices = choices;
+        [self.tableView reloadData];
+    }];
 }
 
 @end

@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class StationsStore;
+@class PersistStore;
 
 
 @interface AddStation : UIViewController<UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource> {
@@ -16,7 +17,9 @@
 
 @property (nonatomic, retain) IBOutlet UISearchBar *searchBar;
 @property (nonatomic, retain) IBOutlet UITableView *tableView;
-@property (nonatomic, assign) StationsStore *store;
+@property (nonatomic, retain) IBOutlet UINavigationBar *navBar;
+@property (nonatomic, assign) StationsStore *stationStore;
+@property (nonatomic, assign) PersistStore *persistStore;
 @property (nonatomic, retain) NSMutableArray *resultNames;
 @property (nonatomic, retain) NSMutableArray *resultIDs;
 

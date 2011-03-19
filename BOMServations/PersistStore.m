@@ -12,7 +12,7 @@
 
 @implementation PersistStore
 
-@synthesize db;
+@synthesize db, queue;
 
 +storeWithFile:(NSString*)file
 {
@@ -25,7 +25,7 @@
 {
 	if((self = [super init])) {
 		dbIsOpen = NO;
-		dbLock = [[NSLock alloc] init];
+        queue = dispatch_queue_create("bomservations.userstore", nil);
 	}	
 	return self;
 }
@@ -34,8 +34,8 @@
 	if(dbIsOpen) {
 		[self closeDatabase];
 	}
-	[dbLock release];
     [db release];
+    dispatch_release(queue);
     [super dealloc];
 }
 
@@ -85,6 +85,33 @@
 -(NSInteger)choicesCount {
     SQLResult *res = [db performQuery:@"SELECT count(*) FROM choices"];
     return [[res rowAtIndex:0] integerForColumnAtIndex:0];
+}
+
+-(void)addStation:(long long)stationID complete:(void (^)(BOOL))block {
+    dispatch_queue_t current_queue = dispatch_get_current_queue();
+    dispatch_async(queue, ^{
+        SQLResult *res = [db performQueryWithFormat:@"INSERT INTO choices (sort_order, station_id) VALUES (%d, %lld)", 0, stationID];
+        dispatch_async(current_queue, ^{
+            block(res != nil);  
+        });
+    });
+}
+
+-(void)choices:(void (^)(NSArray*))block {
+    dispatch_queue_t current_queue = dispatch_get_current_queue();
+    dispatch_async(queue, ^{
+        SQLResult *res = [db performQueryWithFormat:@"SELECT id, station_id FROM choices ORDER BY sort_order ASC"];
+        NSMutableArray *arr = [NSMutableArray arrayWithCapacity:[res rowCount]];
+        for(SQLRow *row in [res rowEnumerator]) {
+            NSNumber *choiceID = [NSNumber numberWithInteger:[row integerForColumn:@"id"]];
+            NSNumber *stationID = [row numberForColumn:@"station_id"];
+            NSDictionary *dict = [NSDictionary dictionaryWithObjectsAndKeys:choiceID, @"id", stationID, @"station_id", nil];
+            [arr addObject:dict];
+        }
+        dispatch_async(current_queue, ^{
+            block(arr);  
+        });
+    });
 }
 
 @end

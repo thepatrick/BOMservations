@@ -9,6 +9,7 @@
 #import "BOMServationsAppDelegate.h"
 #import "PersistStore.h"
 #import "StationsStore.h"
+#import "AddStation.h"
 
 @implementation BOMServationsAppDelegate
 
@@ -26,6 +27,9 @@
 {
     
 	self.store = [PersistStore storeWithFile:[self getDocumentPath:@"bomservations.db"]];
+    
+    NSString *stationsDB = [[NSBundle mainBundle] pathForResource:@"stations" ofType:@"db"];
+    self.stations = [StationsStore storeWithFile:stationsDB];
 	
     self.window.rootViewController = self.navigationController;
     
@@ -33,6 +37,8 @@
         NSLog(@"We have a choice!");
     } else {
         NSLog(@"We should prompt them to choose!");
+        AddStation *station = [[AddStation alloc] initWithNibName:nil bundle:nil];
+        [self.window.rootViewController presentModalViewController:station animated:YES];
     }
     
     [self.window makeKeyAndVisible];

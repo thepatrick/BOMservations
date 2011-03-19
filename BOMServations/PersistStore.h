@@ -11,16 +11,13 @@
 @class SQLDatabase;
 
 @interface PersistStore : NSObject {
-    
-	SQLDatabase *db;
-    
+
 	BOOL dbIsOpen;
-	
-	NSLock *dbLock;
-    
+
 }
 
 @property (nonatomic, retain) SQLDatabase *db;
+@property (nonatomic, assign) dispatch_queue_t queue;
 
 +storeWithFile:(NSString*)file;
 
@@ -30,5 +27,8 @@
 -(void)migrateFrom:(NSInteger)version;
 
 -(NSInteger)choicesCount;
+
+-(void)addStation:(long long)stationID complete:(void (^)(BOOL))block;
+-(void)choices:(void (^)(NSArray*))block;
 
 @end

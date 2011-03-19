@@ -15,7 +15,10 @@
 }
 
 @property (nonatomic, retain) IBOutlet UIBarButtonItem *addStation;
+@property (nonatomic, retain) NSArray *choices;
 
 - (IBAction)addStation:(id)sender;
+
+- (void)reloadData;
 
 @end

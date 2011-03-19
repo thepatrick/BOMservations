@@ -12,13 +12,7 @@
 
 @interface StationsStore : NSObject {
     
-	SQLDatabase *db;
-    
 	BOOL dbIsOpen;
-	
-	NSLock *dbLock;
-    
-    dispatch_queue_t queue;
     
 }
 
