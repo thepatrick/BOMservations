@@ -30,6 +30,12 @@
 		CD2BAA991310C0AA0091E65A /* NSObject+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CD2BAA941310C0AA0091E65A /* NSObject+SBJSON.m */; };
 		CD2BAA9A1310C0AA0091E65A /* NSString+SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CD2BAA961310C0AA0091E65A /* NSString+SBJSON.m */; };
 		CD2BAA9B1310C0AA0091E65A /* SBJSON.m in Sources */ = {isa = PBXBuildFile; fileRef = CD2BAA981310C0AA0091E65A /* SBJSON.m */; };
+		CD60E65C1330D56F00B6F95D /* stations.db in Resources */ = {isa = PBXBuildFile; fileRef = CD60E65B1330D56F00B6F95D /* stations.db */; };
+		CD60E6601330D71A00B6F95D /* StationsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = CD60E65F1330D71A00B6F95D /* StationsStore.m */; };
+		CD60E6651330DEE000B6F95D /* MyChoices.m in Sources */ = {isa = PBXBuildFile; fileRef = CD60E6631330DEE000B6F95D /* MyChoices.m */; };
+		CD60E6661330DEE000B6F95D /* MyChoices.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD60E6641330DEE000B6F95D /* MyChoices.xib */; };
+		CD60E66A1330E10F00B6F95D /* AddStation.m in Sources */ = {isa = PBXBuildFile; fileRef = CD60E6681330E10F00B6F95D /* AddStation.m */; };
+		CD60E66B1330E10F00B6F95D /* AddStation.xib in Resources */ = {isa = PBXBuildFile; fileRef = CD60E6691330E10F00B6F95D /* AddStation.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -70,6 +76,15 @@
 		CD2BAA961310C0AA0091E65A /* NSString+SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+SBJSON.m"; sourceTree = "<group>"; };
 		CD2BAA971310C0AA0091E65A /* SBJSON.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SBJSON.h; sourceTree = "<group>"; };
 		CD2BAA981310C0AA0091E65A /* SBJSON.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SBJSON.m; sourceTree = "<group>"; };
+		CD60E65B1330D56F00B6F95D /* stations.db */ = {isa = PBXFileReference; lastKnownFileType = file; name = stations.db; path = Support/stations.db; sourceTree = SOURCE_ROOT; };
+		CD60E65E1330D71A00B6F95D /* StationsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StationsStore.h; sourceTree = "<group>"; };
+		CD60E65F1330D71A00B6F95D /* StationsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = StationsStore.m; sourceTree = "<group>"; };
+		CD60E6621330DEE000B6F95D /* MyChoices.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyChoices.h; sourceTree = "<group>"; };
+		CD60E6631330DEE000B6F95D /* MyChoices.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyChoices.m; sourceTree = "<group>"; };
+		CD60E6641330DEE000B6F95D /* MyChoices.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = MyChoices.xib; sourceTree = "<group>"; };
+		CD60E6671330E10F00B6F95D /* AddStation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AddStation.h; sourceTree = "<group>"; };
+		CD60E6681330E10F00B6F95D /* AddStation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AddStation.m; sourceTree = "<group>"; };
+		CD60E6691330E10F00B6F95D /* AddStation.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AddStation.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +133,7 @@
 		CD2BAA54131094CF0091E65A /* BOMServations */ = {
 			isa = PBXGroup;
 			children = (
+				CD60E6611330DEB600B6F95D /* View Controllers */,
 				CD2BAA911310C0AA0091E65A /* JSON */,
 				CD2BAA7013109CB10091E65A /* SQLDatabase */,
 				CD2BAA5D131094CF0091E65A /* BOMServationsAppDelegate.h */,
@@ -131,6 +147,8 @@
 				CD2BAA871310A48F0091E65A /* PersistStore.m */,
 				CD2BAA8D1310BF920091E65A /* ObservationRetriever.h */,
 				CD2BAA8E1310BF920091E65A /* ObservationRetriever.m */,
+				CD60E65E1330D71A00B6F95D /* StationsStore.h */,
+				CD60E65F1330D71A00B6F95D /* StationsStore.m */,
 			);
 			path = BOMServations;
 			sourceTree = "<group>";
@@ -138,6 +156,7 @@
 		CD2BAA55131094CF0091E65A /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				CD60E65B1330D56F00B6F95D /* stations.db */,
 				CD0FDFEC1310CE2F007AD280 /* Default.png */,
 				CD0FDFED1310CE2F007AD280 /* Default@2x.png */,
 				CD0FDFEE1310CE2F007AD280 /* Icon.png */,
@@ -176,6 +195,19 @@
 				CD2BAA981310C0AA0091E65A /* SBJSON.m */,
 			);
 			path = JSON;
+			sourceTree = "<group>";
+		};
+		CD60E6611330DEB600B6F95D /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				CD60E6621330DEE000B6F95D /* MyChoices.h */,
+				CD60E6631330DEE000B6F95D /* MyChoices.m */,
+				CD60E6641330DEE000B6F95D /* MyChoices.xib */,
+				CD60E6671330E10F00B6F95D /* AddStation.h */,
+				CD60E6681330E10F00B6F95D /* AddStation.m */,
+				CD60E6691330E10F00B6F95D /* AddStation.xib */,
+			);
+			name = "View Controllers";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -235,6 +267,9 @@
 				CD0FDFF11310CE2F007AD280 /* Default@2x.png in Resources */,
 				CD0FDFF21310CE2F007AD280 /* Icon.png in Resources */,
 				CD0FDFF31310CE2F007AD280 /* Icon@2x.png in Resources */,
+				CD60E65C1330D56F00B6F95D /* stations.db in Resources */,
+				CD60E6661330DEE000B6F95D /* MyChoices.xib in Resources */,
+				CD60E66B1330E10F00B6F95D /* AddStation.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,6 +292,9 @@
 				CD2BAA991310C0AA0091E65A /* NSObject+SBJSON.m in Sources */,
 				CD2BAA9A1310C0AA0091E65A /* NSString+SBJSON.m in Sources */,
 				CD2BAA9B1310C0AA0091E65A /* SBJSON.m in Sources */,
+				CD60E6601330D71A00B6F95D /* StationsStore.m in Sources */,
+				CD60E6651330DEE000B6F95D /* MyChoices.m in Sources */,
+				CD60E66A1330E10F00B6F95D /* AddStation.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

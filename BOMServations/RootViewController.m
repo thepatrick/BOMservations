@@ -36,7 +36,7 @@
 
 - (void)updateBOM {
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
-    [retriever fetchBOMObservations];
+    //[retriever fetchBOMObservations];
     [self populateBOM];
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
 }

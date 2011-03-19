@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'open-uri'
+require 'nokogiri'
+require 'pp'
+require 'json'
+
+path = ARGV[0]
+
+webs = open(path).read
+
+nk = Nokogiri::HTML.parse(webs)
+
+stations = nk.css('.rowleftcolumn a').map do |l|
+  { :url => l['href'].gsub("/products", "http://www.bom.gov.au/fwo").gsub(/shtml$/,"json"), :place => l.text }
+end
+
+puts stations.to_json

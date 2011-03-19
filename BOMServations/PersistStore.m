@@ -73,47 +73,18 @@
 -(void)migrateFrom:(NSInteger)version {
 	if(version < 1) {
 		NSLog(@"Database migrating to v1...");
-		
-		[db performQuery:@"CREATE TABLE observation (id INTEGER PRIMARY KEY, sort_order INTEGER, name STRING, local_date_time STRING, air_temp STRING, apparent_t STRING, rel_hum INTEGER)"];
-                
-//        "sort_order": 0,
-//        "wmo": 94766,
-//        "name": "Canterbury",
-//        "history_product": "IDN60901",
-//        "local_date_time": "20/01:30pm",
-//        "local_date_time_full": "20110220133000",
-//        "aifstime_utc": "20110220023000",
-//        "air_temp": 29.1,
-//        "apparent_t": 28.9,
-//        "cloud": "-",
-//        "cloud_base_m": null,
-//        "cloud_oktas": null,
-//        "cloud_type": "-",
-//        "cloud_type_id": null,
-//        "delta_t": 6.1,
-//        "dewpt": 19.7,
-//        "gust_kmh": 28,
-//        "gust_kt": 15,
-//        "lat": -33.9,
-//        "lon": 151.1,
-//        "press": null,
-//        "press_msl": null,
-//        "press_qnh": null,
-//        "press_tend": "-",
-//        "rain_trace": "0.0",
-//        "rel_hum": 57,
-//        "sea_state": "-",
-//        "swell_dir_worded": "-",
-//        "swell_height": "-",
-//        "swell_length": "-",
-//        "vis_km": "10",
-//        "weather": "-",
-//        "wind_dir": "SE",
-//        "wind_spd_kmh": 20,
-//        "wind_spd_kt": 11
-		
+        
+        [db performQuery:@"CREATE TABLE choices (id INTEGER PRIMARY KEY, sort_order INTEGER, station_id INTEGER)"];
+        
+		[db performQuery:@"CREATE TABLE observations (id INTEGER PRIMARY KEY, choice_id INTEGER, sort_order INTEGER, name STRING, local_date_time STRING, air_temp NUMBER, apparent_t NUMBER, rel_hum INTEGER, aifstime_utc DATETIME, cloud STRING, cloud_base_m STRING, cloud_oktas STRING, cloud_type STRING cloud_type_id INTEGER, delta_t NUMBER, dewpt NUMBER, gust_kmh NUMBER, gust_kt NUMBER, lat NUMBER lon NUMBER, press STRING, press_msl STRING, press_qnh STRING, press_tend STRING, rain_trace STRING, sea_state STRING, swell_dir_worded STRING, swell_height STRING, swell_length STRING, vis_km NUMBER, weather STRING, wind_dir STRING, wind_spd_kmh NUMBER, wind_spd_kt NUMBER)"];
+
 		[db performQuery:@"UPDATE sync_status_and_version SET version = 1"];
     }
+}
+
+-(NSInteger)choicesCount {
+    SQLResult *res = [db performQuery:@"SELECT count(*) FROM choices"];
+    return [[res rowAtIndex:0] integerForColumnAtIndex:0];
 }
 
 @end

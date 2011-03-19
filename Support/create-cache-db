@@ -1,0 +1,26 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'json'
+require 'active_record'
+
+class Station < ActiveRecord::Base
+end
+
+ActiveRecord::Base.establish_connection(:adapter => "sqlite3", :database => "stations.db");
+
+plc = 1
+%w(act nsw vic qld sa wa tas nt).each do |state|
+  f = JSON.parse File.read("#{state}.json")
+  puts "#{state}: #{ f.size } stations"
+  f.each do |station|
+    x = station["url"].match(/([0-9]+)\.([0-9]+)\.json$/)
+    prod_id = x[1]
+    sub_prod_id = x[2]
+    puts "... #{ station["place"] }, #{ x }/#{ prod_id }/#{ sub_prod_id }"
+    s = Station.new :state => state.upcase, :name => station["place"], :url => station["url"]
+    s.id = "#{ plc }#{ prod_id }#{ sub_prod_id }"
+    s.save!
+    plc += 1
+  end
+end

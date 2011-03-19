@@ -29,9 +29,12 @@
 }
 
 
-- (void)fetchBOMObservations {
-//    NSString *bom = @"http://10.0.100.29/~patrick/IDN60901.94766.json";
-    NSString *bom = @"http://www.bom.gov.au/fwo/IDN60901/IDN60901.94766.json";
+- (void)fetchBOMObservations:(NSInteger)stationID {
+    SQLDatabase *db = store.db;
+    
+    SQLRow *config = [[db performQueryWithFormat:@"SELECT * FROM stations WHERE id = %d", stationID] rowAtIndex:0];
+    
+    NSString *bom = [config stringForColumn:@"url"];
     NSURL *bomURL = [NSURL URLWithString:bom];
     NSError *err;
     NSString *observations = [NSString stringWithContentsOfURL:bomURL encoding:NSUTF8StringEncoding error:&err];
@@ -46,12 +49,12 @@
     }
     NSArray *data = [[weather objectForKey:@"observations"] objectForKey:@"data"];
     
-    SQLDatabase *db = store.db;
     
-    [db performQueryWithFormat:@"DELETE FROM observation"];
-    
+    [db performQueryWithFormat:@"DELETE FROM observations WHERE station_id = %d", stationID];
+
+    //    20110220023000
     for(NSDictionary *ob in data) {
-        [db performQueryWithFormat:@"INSERT INTO observation (sort_order, name, local_date_time, air_temp, apparent_t, rel_hum) VALUES (%@, '%@', '%@', '%@', '%@', %@)",
+        [db performQueryWithFormat:@"INSERT INTO observations (sort_order, name, local_date_time, air_temp, apparent_t, rel_hum) VALUES (%@, '%@', '%@', '%@', '%@', %@)",
              [ob objectForKey:@"sort_order"],
              [SQLDatabase prepareStringForQuery:[ob objectForKey:@"name"]],
              [SQLDatabase prepareStringForQuery:[ob objectForKey:@"local_date_time"]],

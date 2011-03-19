@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class PersistStore;
+@class StationsStore;
 
 @interface BOMServationsAppDelegate : NSObject <UIApplicationDelegate> {
 
@@ -19,6 +20,9 @@
 @property (nonatomic, retain) IBOutlet UINavigationController *navigationController;
 
 @property (nonatomic, retain) PersistStore *store;
+@property (nonatomic, retain) StationsStore *stations;
+
++(BOMServationsAppDelegate*)shared;
 
 -(NSString*)getDocumentPath:(NSString*)file;
 

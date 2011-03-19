@@ -1,0 +1,33 @@
+#!/bin/bash
+
+echo ACT...
+./city-level-observation-urls "http://www.bom.gov.au/act/observations/canberra.shtml" > act.json
+
+echo NSW...
+./state-level-observation-urls "http://www.bom.gov.au/nsw/observations/nswall.shtml" > nsw.json
+
+echo VIC...
+./state-level-observation-urls "http://www.bom.gov.au/vic/observations/vicall.shtml" > vic.json
+
+echo QLD...
+./state-level-observation-urls "http://www.bom.gov.au/qld/observations/qldall.shtml" > qld.json
+
+echo SA...
+./state-level-observation-urls "http://www.bom.gov.au/sa/observations/saall.shtml" > sa.json
+
+echo WA...
+./state-level-observation-urls "http://www.bom.gov.au/wa/observations/waall.shtml" > wa.json
+
+echo TAS...
+./state-level-observation-urls "http://www.bom.gov.au/tas/observations/tasall.shtml" > tas.json
+
+echo NT...
+./state-level-observation-urls "http://www.bom.gov.au/nt/observations/ntall.shtml" > nt.json
+
+echo Creating database
+rm stations.db
+sqlite3 stations.db "CREATE TABLE stations (id INTEGER PRIMARY KEY, state STRING, name STRING, url STRING)"
+
+./create-cache-db
+
+echo Done.

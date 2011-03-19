@@ -1,16 +1,16 @@
 //
-//  PersistStore.h
+//  StationsStore.h
 //  BOMServations
 //
-//  Created by Patrick Quinn-Graham on 20/02/11.
-//  Copyright 2011 Patrick Quinn-Graham. All rights reserved.
+//  Created by Patrick Quinn-Graham on 16/03/11.
+//  Copyright 2011 Sharkey Media. All rights reserved.
 //
 
 #import <Foundation/Foundation.h>
 
 @class SQLDatabase;
 
-@interface PersistStore : NSObject {
+@interface StationsStore : NSObject {
     
 	SQLDatabase *db;
     
@@ -18,17 +18,17 @@
 	
 	NSLock *dbLock;
     
+    dispatch_queue_t queue;
+    
 }
 
 @property (nonatomic, retain) SQLDatabase *db;
+@property (nonatomic, assign) dispatch_queue_t queue;
 
 +storeWithFile:(NSString*)file;
 
 -(BOOL)openDatabase:(NSString *)fileName;
 -(void)closeDatabase;
 
--(void)migrateFrom:(NSInteger)version;
-
--(NSInteger)choicesCount;
 
 @end

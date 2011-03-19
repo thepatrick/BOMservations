@@ -8,14 +8,19 @@
 
 #import "BOMServationsAppDelegate.h"
 #import "PersistStore.h"
+#import "StationsStore.h"
 
 @implementation BOMServationsAppDelegate
 
-@synthesize store;
+@synthesize store, stations;
 
 @synthesize window=_window;
 
 @synthesize navigationController=_navigationController;
+
++(BOMServationsAppDelegate*)shared {
+    return [[UIApplication sharedApplication] delegate];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -23,6 +28,13 @@
 	self.store = [PersistStore storeWithFile:[self getDocumentPath:@"bomservations.db"]];
 	
     self.window.rootViewController = self.navigationController;
+    
+    if([self.store choicesCount] > 0) {
+        NSLog(@"We have a choice!");
+    } else {
+        NSLog(@"We should prompt them to choose!");
+    }
+    
     [self.window makeKeyAndVisible];
     return YES;
 }
