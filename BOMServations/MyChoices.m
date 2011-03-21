@@ -3,7 +3,7 @@
 //  BOMServations
 //
 //  Created by Patrick Quinn-Graham on 16/03/11.
-//  Copyright 2011 Sharkey Media. All rights reserved.
+//  Copyright 2011 Patrick Quinn-Graham. All rights reserved.
 //
 
 #import "MyChoices.h"
