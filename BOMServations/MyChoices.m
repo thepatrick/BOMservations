@@ -9,7 +9,9 @@
 #import "MyChoices.h"
 #import "BOMServationsAppDelegate.h"
 #import "PersistStore.h"
+#import "StationsStore.h"
 #import "AddStation.h"
+#import "RootViewController.h"
 
 @implementation MyChoices
 @synthesize addStation, choices=_choices;
@@ -100,7 +102,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-#warning Incomplete method implementation.
     // Return the number of rows in the section.
     return [self.choices count];
 }
@@ -119,6 +120,11 @@
     NSDictionary *row = [self.choices objectAtIndex:indexPath.row];
     
     cell.textLabel.text = [NSString stringWithFormat:@"ID: %@, Station: %@", [row objectForKey:@"id"], [row objectForKey:@"station_id"]];
+    
+    [[BOMServationsAppDelegate shared].stations stationDetail:[[row objectForKey:@"station_id"] longLongValue] callback:^(NSDictionary* stationInfo) {
+        NSLog(@"stationInfo for %@: %@", [row objectForKey:@"station_id"], stationInfo);
+        cell.textLabel.text = [stationInfo objectForKey:@"name"];
+    }];
     
     return cell;
 }
@@ -166,14 +172,9 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    // Navigation logic may go here. Create and push another view controller.
-    /*
-     <#DetailViewController#> *detailViewController = [[<#DetailViewController#> alloc] initWithNibName:@"<#Nib name#>" bundle:nil];
-     // ...
-     // Pass the selected object to the new view controller.
-     [self.navigationController pushViewController:detailViewController animated:YES];
-     [detailViewController release];
-     */
+    NSDictionary *choice = [self.choices objectAtIndex:indexPath.row];
+    RootViewController *rvc = [RootViewController stationWithStationID:[[choice objectForKey:@"id"] integerValue]];
+    [self.navigationController pushViewController:rvc animated:YES];
 }
 
 - (IBAction)addStation:(id)sender {

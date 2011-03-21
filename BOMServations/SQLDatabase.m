@@ -78,6 +78,12 @@
 + (NSString*)prepareStringForQuery:(NSString*)inString
 {
 	NSMutableString*	string;
+    if([inString respondsToSelector:@selector(stringValue)]) {
+        inString = [(id)inString stringValue];
+    }
+    if((NSNull*)inString == [NSNull null]) {
+        inString = nil;
+    }
 	NSRange				range = NSMakeRange( 0, [inString length] );
 	NSRange				subRange;
 	

@@ -76,7 +76,7 @@
         
         [db performQuery:@"CREATE TABLE choices (id INTEGER PRIMARY KEY, sort_order INTEGER, station_id INTEGER)"];
         
-		[db performQuery:@"CREATE TABLE observations (id INTEGER PRIMARY KEY, choice_id INTEGER, sort_order INTEGER, name STRING, local_date_time STRING, air_temp NUMBER, apparent_t NUMBER, rel_hum INTEGER, aifstime_utc DATETIME, cloud STRING, cloud_base_m STRING, cloud_oktas STRING, cloud_type STRING cloud_type_id INTEGER, delta_t NUMBER, dewpt NUMBER, gust_kmh NUMBER, gust_kt NUMBER, lat NUMBER lon NUMBER, press STRING, press_msl STRING, press_qnh STRING, press_tend STRING, rain_trace STRING, sea_state STRING, swell_dir_worded STRING, swell_height STRING, swell_length STRING, vis_km NUMBER, weather STRING, wind_dir STRING, wind_spd_kmh NUMBER, wind_spd_kt NUMBER)"];
+		[db performQuery:@"CREATE TABLE observations (id INTEGER PRIMARY KEY, choice_id INTEGER, sort_order INTEGER, name STRING, local_date_time STRING, air_temp NUMBER, apparent_t NUMBER, rel_hum INTEGER, aifstime_utc DATETIME, cloud STRING, cloud_base_m STRING, cloud_oktas STRING, cloud_type STRING, cloud_type_id INTEGER, delta_t NUMBER, dewpt NUMBER, gust_kmh NUMBER, gust_kt NUMBER, lat NUMBER, lon NUMBER, press STRING, press_msl STRING, press_qnh STRING, press_tend STRING, rain_trace STRING, sea_state STRING, swell_dir_worded STRING, swell_height STRING, swell_length STRING, vis_km NUMBER, weather STRING, wind_dir STRING, wind_spd_kmh NUMBER, wind_spd_kt NUMBER)"];
 
 		[db performQuery:@"UPDATE sync_status_and_version SET version = 1"];
     }
@@ -113,5 +113,29 @@
         });
     });
 }
+
+
+-(void)choiceIDForStationID:(long long)stationID callback:(void (^)(NSInteger))block {
+    dispatch_queue_t current_queue = dispatch_get_current_queue();
+    dispatch_async(queue, ^{
+        SQLResult *res = [db performQueryWithFormat:@"SELECT id FROM choices WHERE station_id = %lld", stationID];
+        NSInteger choiceID = [[res rowAtIndex:0] integerForColumn:@"id"];
+        dispatch_async(current_queue, ^{
+            block(choiceID);  
+        });
+    });
+}
+
+-(void)stationIDForChoiceID:(NSInteger)choiceID callback:(void (^)(long long))block {
+    dispatch_queue_t current_queue = dispatch_get_current_queue();
+    dispatch_async(queue, ^{
+        SQLResult *res = [db performQueryWithFormat:@"SELECT station_id FROM choices WHERE id = %d", choiceID];
+        long long stationID = [[[res rowAtIndex:0] numberForColumn:@"station_id"] longLongValue];
+        dispatch_async(current_queue, ^{
+            block(stationID);  
+        });
+    });    
+}
+
 
 @end

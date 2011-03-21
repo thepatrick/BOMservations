@@ -31,4 +31,7 @@
 -(void)addStation:(long long)stationID complete:(void (^)(BOOL))block;
 -(void)choices:(void (^)(NSArray*))block;
 
+-(void)choiceIDForStationID:(long long)stationID callback:(void (^)(NSInteger))block;
+-(void)stationIDForChoiceID:(NSInteger)choiceID callback:(void (^)(long long))block;
+
 @end

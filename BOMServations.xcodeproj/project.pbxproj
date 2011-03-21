@@ -139,9 +139,6 @@
 				CD2BAA5D131094CF0091E65A /* BOMServationsAppDelegate.h */,
 				CD2BAA5E131094CF0091E65A /* BOMServationsAppDelegate.m */,
 				CD2BAA60131094CF0091E65A /* MainWindow.xib */,
-				CD2BAA63131094CF0091E65A /* RootViewController.h */,
-				CD2BAA64131094CF0091E65A /* RootViewController.m */,
-				CD2BAA66131094CF0091E65A /* RootViewController.xib */,
 				CD2BAA55131094CF0091E65A /* Supporting Files */,
 				CD2BAA861310A48D0091E65A /* PersistStore.h */,
 				CD2BAA871310A48F0091E65A /* PersistStore.m */,
@@ -206,6 +203,9 @@
 				CD60E6671330E10F00B6F95D /* AddStation.h */,
 				CD60E6681330E10F00B6F95D /* AddStation.m */,
 				CD60E6691330E10F00B6F95D /* AddStation.xib */,
+				CD2BAA63131094CF0091E65A /* RootViewController.h */,
+				CD2BAA64131094CF0091E65A /* RootViewController.m */,
+				CD2BAA66131094CF0091E65A /* RootViewController.xib */,
 			);
 			name = "View Controllers";
 			sourceTree = "<group>";

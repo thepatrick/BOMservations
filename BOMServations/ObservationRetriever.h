@@ -8,14 +8,13 @@
 
 #import <Foundation/Foundation.h>
 
-@class PersistStore;
+@class BOMServationsAppDelegate;
 
 @interface ObservationRetriever : NSObject {
-    
-    PersistStore *store;
-    
 }
 
-- (void)fetchBOMObservations;
+@property (nonatomic, assign) BOMServationsAppDelegate *del;
+
+- (void)fetchObservations:(long long)stationID callback:(void (^)())callback;
 
 @end

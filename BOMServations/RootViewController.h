@@ -18,9 +18,15 @@
     
     UIBarButtonItem *refresh;
     
+    NSDateFormatter *dateFormatter;
+    
 }
 
 @property (nonatomic, retain) NSArray *observations;
+@property (nonatomic, assign) NSInteger choiceID;
 
++stationWithStationID:(NSInteger)choiceID;
+
+- (void)updateBOM:(void (^)())callback;
 
 @end
