@@ -12,7 +12,7 @@ webs = open(path).read
 
 nk = Nokogiri::HTML.parse(webs)
 
-stations = nk.css('#obs-table a').map do |l|
+stations = nk.css('table.obs_table tbody tr th a').map do |l|
   { :url => l['href'].gsub("/products", "http://www.bom.gov.au/fwo").gsub(/shtml$/,"json"), :place => l.text }
 end
 
